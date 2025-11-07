@@ -1,28 +1,16 @@
-import React from 'react';
-
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-black text-white/80">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-8">
-          <div>
-            <h3 className="text-white font-semibold text-lg">Let’s work together</h3>
-            <p className="mt-2">Available for freelance projects and collaborations.</p>
-          </div>
-          <div>
-            <p className="mb-2">Email</p>
-            <a className="text-white hover:underline" href="mailto:hello@seasons.studio">hello@seasons.studio</a>
-          </div>
-          <div>
-            <p className="mb-2">Social</p>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-white">Twitter</a>
-              <a href="#" className="hover:text-white">LinkedIn</a>
-              <a href="#" className="hover:text-white">Dribbble</a>
-            </div>
+    <footer id="contact" className="border-t border-white/10 bg-black py-12 text-white">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-white/70">Designed for a cosmic, seasonal journey.</p>
+          <div className="flex gap-4 text-sm">
+            <a href="mailto:hello@example.com" className="text-white/80 hover:text-white">Email</a>
+            <a href="https://x.com" target="_blank" rel="noreferrer" className="text-white/80 hover:text-white">X</a>
+            <a href="https://github.com" target="_blank" rel="noreferrer" className="text-white/80 hover:text-white">GitHub</a>
           </div>
         </div>
-        <div className="mt-10 border-t border-white/10 pt-6 text-sm text-white/60">© {new Date().getFullYear()} Seasons Portfolio</div>
+        <p className="mt-6 text-xs text-white/50">© {new Date().getFullYear()} Cosmic Seasons</p>
       </div>
     </footer>
   );

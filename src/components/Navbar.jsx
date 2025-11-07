@@ -1,43 +1,80 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-
-const links = [
-  { href: '#home', label: 'Home' },
-  { href: '#seasons', label: 'Seasons' },
-  { href: '#about', label: 'About' },
-  { href: '#contact', label: 'Contact' },
-];
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const links = [
+    { href: '#home', label: 'Home' },
+    { href: '#seasons', label: 'Seasons' },
+    { href: '#about', label: 'About' },
+    { href: '#contact', label: 'Contact' },
+  ];
+
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ type: 'spring', stiffness: 140, damping: 16 }}
-      className="fixed top-0 left-0 right-0 z-50"
-    >
-      <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between backdrop-blur-xl bg-black/30 rounded-b-2xl border-b border-white/10">
-        <a href="#home" className="text-white font-semibold tracking-wide">
-          Seasons Portfolio
-        </a>
-        <nav className="hidden md:flex items-center gap-6">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="text-sm text-white/80 hover:text-white transition-colors"
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
-        <a
-          href="#contact"
-          className="text-xs md:text-sm px-3 py-2 rounded-full border border-white/10 bg-white/10 hover:bg-white/20 text-white transition-colors"
-        >
-          Say Hello
-        </a>
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all ${
+      scrolled ? 'backdrop-blur bg-black/30 border-b border-white/10' : 'bg-transparent'
+    }`}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <a href="#home" className="font-semibold tracking-tight text-white">
+            <span className="bg-gradient-to-r from-fuchsia-400 to-blue-300 bg-clip-text text-transparent">Cosmic Seasons</span>
+          </a>
+
+          <nav className="hidden gap-6 md:flex">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                className="text-sm text-white/80 hover:text-white transition-colors"
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="inline-flex items-center justify-center rounded-md p-2 text-white/80 hover:text-white md:hidden"
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
-    </motion.header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className="md:hidden overflow-hidden border-t border-white/10"
+          >
+            <div className="space-y-2 px-4 py-4">
+              {links.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-md px-3 py-2 text-white/90 hover:bg-white/5"
+                >
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </header>
   );
 }
