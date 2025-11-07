@@ -1,28 +1,33 @@
-import { useState } from 'react'
+import React from 'react';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import SeasonSection from './components/SeasonSection';
+import Footer from './components/Footer';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen bg-black text-white">
+      <Navbar />
+      <main>
+        <Hero />
+        <section id="seasons">
+          <SeasonSection season="spring" index={0} />
+          <SeasonSection season="summer" index={1} />
+          <SeasonSection season="autumn" index={2} />
+          <SeasonSection season="winter" index={3} />
+        </section>
+        <section id="about" className="bg-neutral-950">
+          <div className="max-w-7xl mx-auto px-4 py-24">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight">About</h2>
+            <p className="mt-4 text-white/80 max-w-3xl">
+              I craft digital experiences that feel alive. This portfolio uses seasonal themes to showcase different moods and approaches to design and development. Smooth animations and scroll-based reveals guide you through the story.
+            </p>
+          </div>
+        </section>
+      </main>
+      <Footer />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
