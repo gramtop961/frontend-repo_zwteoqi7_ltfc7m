@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Spline from '@splinetool/react-spline';
 
 const seasonCopy = {
@@ -22,17 +23,24 @@ const seasonCopy = {
 
 export default function Hero({ currentSeason = 'spring', onSelectSeason }) {
   const copy = seasonCopy[currentSeason] ?? seasonCopy.spring;
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] });
+
+  // Parallax transforms
+  const titleY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const subY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
 
   return (
-    <section id="home" className="relative min-h-screen w-full bg-black text-white">
+    <section id="home" ref={ref} className="relative min-h-screen w-full bg-black text-white">
       {/* 3D Scene */}
       <div className="absolute inset-0">
-        <Spline scene="https://prod.spline.design/ns1MlpZQDFS29uiL/scene.splinecode" style={{ width: '100%', height: '100%' }} />
+        <Spline scene="https://prod.spline.design/EF7JOSsHLk16Tlw9/scene.splinecode" style={{ width: '100%', height: '100%' }} />
       </div>
 
-      {/* Gradients - keep interactions free for Spline */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(147,51,234,0.25),transparent_50%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/70" />
+      {/* Parallax cosmic glows - keep interactions free for Spline */}
+      <motion.div style={{ opacity: glowOpacity }} className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_20%,rgba(147,51,234,0.28),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-black/30 to-black/70" />
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl items-center px-6">
@@ -51,6 +59,7 @@ export default function Hero({ currentSeason = 'spring', onSelectSeason }) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            style={{ y: titleY }}
             className="mt-2 text-4xl font-bold sm:text-6xl"
           >
             {copy.title}
@@ -61,6 +70,7 @@ export default function Hero({ currentSeason = 'spring', onSelectSeason }) {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
+            style={{ y: subY }}
             className="mt-4 text-lg text-white/85"
           >
             {copy.subtitle}
